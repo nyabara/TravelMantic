@@ -1,10 +1,10 @@
 package com.example.travelmantic;
 
 public class TravelDeal {
-    private String id;
-    private String title;
-    private String price;
-    private String description;
+    public String id;
+    public String title;
+    public String price;
+    public String description;
     public TravelDeal(){}
     public TravelDeal(String title, String price, String description){
         this.title = title;

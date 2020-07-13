@@ -4,13 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TravelListActivity">
+    tools:context=".ListActivity">
 
-    <TextView
-        android:id="@+id/txtfetch"
-        android:layout_width="165dp"
-        android:layout_height="114dp"
-        android:text="TextView"
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/idrecyclev"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        tools:listitem="@layout/item_list" />
 </androidx.constraintlayout.widget.ConstraintLayout>
