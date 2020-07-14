@@ -1,6 +1,7 @@
 package com.example.travelmantic;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -73,6 +74,7 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.DealViewHolder
     @Override
     public void onBindViewHolder(@NonNull DealViewHolder holder, int position) {
         TravelDeal deal=mDeals.get(position);
+        holder.currentposition=position;
         holder.bind(deal);
 
     }
@@ -84,6 +86,7 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.DealViewHolder
 
     public class DealViewHolder extends RecyclerView.ViewHolder {
         TextView dealTitle,dealDescription,dealPrice;
+        public int currentposition;
 
         public DealViewHolder(@NonNull View itemView) {
 
@@ -91,6 +94,16 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.DealViewHolder
             dealTitle=itemView.findViewById(R.id.dealTitle);
             dealDescription=itemView.findViewById(R.id.dealDescription);
             dealPrice=itemView.findViewById(R.id.dealPrice);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent=new Intent(v.getContext(),DealActivity.class);
+                    TravelDeal selectedDeal=mDeals.get(currentposition);
+                    Log.d("click", String.valueOf(selectedDeal));
+                    intent.putExtra("Deal",selectedDeal);
+                    v.getContext().startActivity(intent);
+                }
+            });
         }
         public void bind(TravelDeal deal)
         {

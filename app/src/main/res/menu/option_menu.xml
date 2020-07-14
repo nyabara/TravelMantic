@@ -5,5 +5,8 @@
     <item android:id="@+id/itsave"
         android:title="@string/hint_sava"
         app:showAsAction="always"/>
+    <item android:id="@+id/deleteDeal"
+        android:title="Delete Deal"
+        app:showAsAction="never"/>
 
 </menu>

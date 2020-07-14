@@ -1,6 +1,8 @@
 package com.example.travelmantic;
 
-public class TravelDeal {
+import java.io.Serializable;
+
+public class TravelDeal implements Serializable {
     public String id;
     public String title;
     public String price;

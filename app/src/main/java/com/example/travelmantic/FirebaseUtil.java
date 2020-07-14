@@ -15,8 +15,8 @@ public class FirebaseUtil {
         {
             sFirebaseUtil=new FirebaseUtil();
             sFirebaseDatabase=FirebaseDatabase.getInstance();
-            sDeals=new ArrayList<>();
         }
+        sDeals=new ArrayList<>();
         sDatabaseReference=sFirebaseDatabase.getReference().child(ref);
     }
 
