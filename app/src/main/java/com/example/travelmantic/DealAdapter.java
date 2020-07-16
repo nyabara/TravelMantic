@@ -1,5 +1,6 @@
 package com.example.travelmantic;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -25,8 +26,9 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.DealViewHolder
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mDatabaseReference;
     private ChildEventListener mChildEventListener;
+    private Context mContext;
     public DealAdapter(){
-        FirebaseUtil.openFirebaseRefence("travel");
+        FirebaseUtil.openFirebaseRefence("travel", (ListActivity) mContext);
         mFirebaseDatabase=FirebaseUtil.sFirebaseDatabase;
         mDatabaseReference=FirebaseUtil.sDatabaseReference;
         mDeals=FirebaseUtil.sDeals;

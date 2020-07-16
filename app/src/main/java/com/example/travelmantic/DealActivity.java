@@ -3,6 +3,7 @@ package com.example.travelmantic;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -29,8 +30,6 @@ public class DealActivity extends AppCompatActivity {
         editTitle=findViewById(R.id.editTitle);
         editPrice=findViewById(R.id.editPrice);
         editDescription=findViewById(R.id.editDescription);
-
-        FirebaseUtil.openFirebaseRefence("travel");
         mFirebaseDatabase=FirebaseUtil.sFirebaseDatabase;
         mDatabaseReference=FirebaseUtil.sDatabaseReference;
         TravelDeal deal= (TravelDeal) getIntent().getSerializableExtra("Deal");
@@ -52,6 +51,16 @@ public class DealActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.option_menu,menu);
+        if (FirebaseUtil.isadmin){
+            menu.findItem(R.id.itsave).setVisible(true);
+            menu.findItem(R.id.deleteDeal).setVisible(true);
+            enableEditTexts(true);
+        }
+        else {
+            menu.findItem(R.id.itsave).setVisible(false);
+            menu.findItem(R.id.deleteDeal).setVisible(false);
+            enableEditTexts(false);
+        }
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -102,6 +111,11 @@ public class DealActivity extends AppCompatActivity {
     }
     private void backToList(){
         startActivity(new Intent(DealActivity.this,ListActivity.class));
+    }
+    private void enableEditTexts(boolean isEnabled){
+        editPrice.setEnabled(isEnabled);
+        editDescription.setEnabled(isEnabled);
+        editTitle.setEnabled(isEnabled);
     }
 
 
