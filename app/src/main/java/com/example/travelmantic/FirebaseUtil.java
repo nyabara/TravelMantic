@@ -14,6 +14,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,6 +27,8 @@ public class FirebaseUtil {
     public static DatabaseReference sDatabaseReference;
     public static ArrayList<TravelDeal> sDeals;
     public static FirebaseAuth sFirebaseAuth;
+    public static FirebaseStorage sStorage;
+    public static StorageReference sStorageReference;
     public static FirebaseAuth.AuthStateListener sAuthStateListener;
     private static ListActivity caller;
     public static boolean isadmin;
@@ -36,6 +40,7 @@ public class FirebaseUtil {
             sFirebaseDatabase=FirebaseDatabase.getInstance();
             sFirebaseAuth=FirebaseAuth.getInstance();
             caller=callerActivity;
+
             sAuthStateListener=new FirebaseAuth.AuthStateListener() {
                 @Override
                 public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -49,17 +54,19 @@ public class FirebaseUtil {
                     Toast.makeText(callerActivity, "welcome back", Toast.LENGTH_SHORT).show();
 
 
-
-
-
                 }
             };
+            connectStorage();
         }
         
         sDeals=new ArrayList<>();
         sDatabaseReference=sFirebaseDatabase.getReference().child(ref);
-    }
 
+    }
+    private static void connectStorage(){
+        sStorage=FirebaseStorage.getInstance();
+        sStorageReference=sStorage.getReference().child("dealsPicture");
+    }
     private static void checkisAdmin(String userid) {
         FirebaseUtil.isadmin=false;
         DatabaseReference ref=sFirebaseDatabase.getReference().child("adminstrators").child(userid);
