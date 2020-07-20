@@ -77,11 +77,14 @@ public class DealActivity extends AppCompatActivity {
             menu.findItem(R.id.itsave).setVisible(true);
             menu.findItem(R.id.deleteDeal).setVisible(true);
             enableEditTexts(true);
+            findViewById(R.id.btnimage).setEnabled(true);
         }
         else {
             menu.findItem(R.id.itsave).setVisible(false);
             menu.findItem(R.id.deleteDeal).setVisible(false);
             enableEditTexts(false);
+            findViewById(R.id.btnimage).setEnabled(false);
+
         }
         return super.onCreateOptionsMenu(menu);
     }
@@ -128,6 +131,21 @@ public class DealActivity extends AppCompatActivity {
             Toast.makeText(this, "save deal before deleting", Toast.LENGTH_SHORT).show();
             return;
         }
+        if (deal.getImageName()!=null&&!deal.getImageName().isEmpty()){
+            StorageReference picref=FirebaseUtil.sStorage.getReference().child(deal.getImageName());
+            picref.delete().addOnSuccessListener(this, new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Toast.makeText(DealActivity.this, "success in deleting", Toast.LENGTH_SHORT).show();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.d("Error:",e.getMessage());
+
+                }
+            });
+        }
         mDatabaseReference.child(deal.getId()).removeValue();
 
     }
@@ -151,7 +169,11 @@ public class DealActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(Uri uri) {
                     String url=uri.toString();
+                    String picturename=uri.getPath();
                     deal.setImageUrl(url);
+                    deal.setImageName(picturename);
+                    Log.d("url",url);
+                    Log.d("picturename",picturename);
                     showImage(url);
 
                 }
