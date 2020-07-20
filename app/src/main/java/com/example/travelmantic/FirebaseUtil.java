@@ -75,7 +75,7 @@ public class FirebaseUtil {
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 FirebaseUtil.isadmin=true;
                 caller.showMenu();
-                Log.d("admin","youre an administrator");
+                Log.d("admin","you're an administrator");
             }
 
             @Override

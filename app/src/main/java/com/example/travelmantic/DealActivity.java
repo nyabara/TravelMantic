@@ -57,6 +57,7 @@ public class DealActivity extends AppCompatActivity {
         editTitle.setText(deal.getTitle());
         editDescription.setText(deal.getDescription());
         editPrice.setText(deal.getPrice());
+        showImage(deal.getImageUrl());
 
         btnUpload.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,13 +143,14 @@ public class DealActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode==REQUEST_PICTURES&&requestCode==RESULT_OK){
+        if (requestCode==REQUEST_PICTURES&&resultCode==RESULT_OK){
             Uri imageUrl=data.getData();
             final StorageReference picRef=FirebaseUtil.sStorageReference.child(imageUrl.getLastPathSegment());
-            picRef.putFile(imageUrl).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            picRef.putFile(imageUrl);
+            picRef.getDownloadUrl().addOnSuccessListener(this, new OnSuccessListener<Uri>() {
                 @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    String url=picRef.getDownloadUrl().toString();
+                public void onSuccess(Uri uri) {
+                    String url=uri.toString();
                     deal.setImageUrl(url);
                     showImage(url);
 
@@ -156,17 +158,32 @@ public class DealActivity extends AppCompatActivity {
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Log.d("error:",e.getMessage());
+                    Log.d("Error:",e.getMessage());
 
                 }
             });
+//           picRef.putFile(imageUrl).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//                @Override
+//                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//                    String url=taskSnapshot.getStorage().getDownloadUrl().toString();
+//                    deal.setImageUrl(url);
+//                    showImage(url);
+//
+//                }
+//            }).addOnFailureListener(new OnFailureListener() {
+//                @Override
+//                public void onFailure(@NonNull Exception e) {
+//                    Log.d("error:",e.getMessage());
+//
+//                }
+//            });
         }
     }
 
     private void showImage(String url) {
-        if (url!=null&&url.isEmpty()==false){
+        if (url!=null&&!url.isEmpty()){
             int width= Resources.getSystem().getDisplayMetrics().widthPixels;
-            Picasso.with(this).load(url).resize(width,width*2/3).centerCrop().into(image);
+            Picasso.get().load(url).resize(width,width*2/3).centerCrop().into(image);
         }
     }
 }

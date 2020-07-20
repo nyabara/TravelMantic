@@ -3,10 +3,12 @@ package com.example.travelmantic;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,6 +20,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -26,9 +29,10 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.DealViewHolder
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mDatabaseReference;
     private ChildEventListener mChildEventListener;
+    ImageView imagedeal;
     private Context mContext;
     public DealAdapter(){
-        FirebaseUtil.openFirebaseRefence("travel", (ListActivity) mContext);
+        //FirebaseUtil.openFirebaseRefence("travel", (ListActivity) mContext);
         mFirebaseDatabase=FirebaseUtil.sFirebaseDatabase;
         mDatabaseReference=FirebaseUtil.sDatabaseReference;
         mDeals=FirebaseUtil.sDeals;
@@ -93,6 +97,7 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.DealViewHolder
         public DealViewHolder(@NonNull View itemView) {
 
             super(itemView);
+            imagedeal=itemView.findViewById(R.id.imageDeal);
             dealTitle=itemView.findViewById(R.id.dealTitle);
             dealDescription=itemView.findViewById(R.id.dealDescription);
             dealPrice=itemView.findViewById(R.id.dealPrice);
@@ -112,6 +117,13 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.DealViewHolder
             dealTitle.setText(deal.getTitle());
             dealDescription.setText(deal.getDescription());
             dealPrice.setText(deal.getPrice());
+            showImage(deal.getImageUrl());
+        }
+
+    }
+    private void showImage(String url) {
+        if (url!=null&&!url.isEmpty()){
+            Picasso.get().load(url).resize(80,80).centerCrop().into(imagedeal);
         }
     }
 }
